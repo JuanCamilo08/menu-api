@@ -5,6 +5,9 @@ loggingErrors();
 const express = require('express');
 const app = express();
 
+// some stuff to help in the validations
+require('./startup/validate');
+
 app.use(express.json());
 
 const port = process.env.PORT || 3000;

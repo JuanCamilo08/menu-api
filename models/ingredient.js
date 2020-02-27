@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
     minlength: 5,
     maxlength: 200
   }
-}) 
+});
 
 module.exports.Ingredient = mongoose.model('ingredient', schema);
 
@@ -25,4 +25,3 @@ module.exports.validateIngredient = function(ingredient){
 
   return schema.validate(ingredient);
 }
-
