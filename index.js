@@ -9,7 +9,7 @@ const app = express();
 require('./startup/db')();
 
 // some stuff to help in the validations
-require('./startup/validate');
+require('./startup/validate')();
 
 //routes
 require('./startup/routes')(app);

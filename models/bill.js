@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     required: true
   },
   items: {
-    type: [{type: mongoose.Types.ObjectId, ref: 'food'}],
+    type: [{ type: mongoose.Types.ObjectId, ref: 'food' }],
     required: true,
     min: 1,
     max: 25
@@ -25,16 +25,22 @@ const schema = new mongoose.Schema({
   }
 });
 
-module.exports.Ingredient = mongoose.model('bill', schema);
+module.exports.Bill = mongoose.model('bill', schema);
 
-module.exports.validateIngredient = function(bill){
+module.exports.validateBill = function(bill) {
   const schema = Joi.Object({
     customer: Joi.objectId().required(),
     date: Joi.date(),
-    items: Joi.array().items(Joi.objectId()).min(1).max(25).required(),
-    totalPrice: Joi.number().min(80).max(5000).required()
-  })
+    items: Joi.array()
+      .items(Joi.objectId())
+      .min(1)
+      .max(25)
+      .required(),
+    totalPrice: Joi.number()
+      .min(80)
+      .max(5000)
+      .required()
+  });
 
   return schema.validate(bill);
-}
-
+};

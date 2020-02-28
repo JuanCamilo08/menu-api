@@ -27,6 +27,7 @@
   "homepage": "https://github.com/JuanCamilo08/menu-api#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi-objectid": "^3.0.1",
     "mongoose": "^5.9.2",
