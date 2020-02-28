@@ -17,11 +17,16 @@ const schema = new mongoose.Schema({
 
 module.exports.Ingredient = mongoose.model('ingredient', schema);
 
-module.exports.validateIngredient = function(ingredient){
-  const schema = Joi.Object({
-    name: Joi.string().min(5).max(50).required(),
-    description: Joi.string().min(5).max(200)
-  })
+module.exports.validateIngredient = function(ingredient) {
+  const schema = Joi.object({
+    name: Joi.string()
+      .min(5)
+      .max(50)
+      .required(),
+    description: Joi.string()
+      .min(5)
+      .max(200)
+  });
 
   return schema.validate(ingredient);
-}
+};

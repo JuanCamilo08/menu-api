@@ -6,12 +6,13 @@ const express = require('express');
 const app = express();
 
 // initialize the db
-require('./startup/db')()
+require('./startup/db')();
 
 // some stuff to help in the validations
 require('./startup/validate');
 
-app.use(express.json());
+//routes
+require('./startup/routes')(app);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => logger.info('Listening on port 3000...'));
