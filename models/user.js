@@ -20,16 +20,21 @@ const schema = new mongoose.Schema({
     default: false,
     required: true
   }
-})
+});
 
 module.exports.User = mongoose.model('user', schema);
 
-module.exports.validateUser = function(user){
+module.exports.validateUser = function(user) {
   const schema = Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().min(5).max(200).required(),
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string()
+      .min(5)
+      .max(200)
+      .required(),
     isAdmin: Joi.bool()
   });
 
-  return Joi.validate(user, schema)
-}
+  return schema.validate(user);
+};
