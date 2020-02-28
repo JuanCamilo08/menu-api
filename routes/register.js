@@ -6,7 +6,7 @@ const validator = require('../middlewares/validator');
 
 router.post('/', validator(validateUser), async (req, res) => {
   let user = new User(req.body);
-  console.log(user.password);
+
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 

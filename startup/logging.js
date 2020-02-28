@@ -25,7 +25,7 @@ module.exports.loggingErrors = function() {
     throw ex;
   });
 
-  process.on('uncaughtException', ex => {
-    logger.error(ex);
+  process.on('uncaughtException', error => {
+    logger.error(error.message);
   });
 };

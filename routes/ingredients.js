@@ -3,8 +3,10 @@ const router = express.Router();
 const { Ingredient, validateIngredient } = require('../models/ingredient');
 const validator = require('../middlewares/validator');
 const validateObjectId = require('../middlewares/validateObjectId');
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 
-router.get('/', async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
   try {
     const ingredients = await Ingredient.find();
     res.send(ingredients);
@@ -13,7 +15,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', validator(validateIngredient), async (req, res) => {
+router.post('/', [auth, admin, validator(validateIngredient)], async (req, res) => {
   let ingredient = new Ingredient({
     name: req.body.name,
     description: req.body.description
@@ -23,15 +25,19 @@ router.post('/', validator(validateIngredient), async (req, res) => {
   res.send(ingredient);
 });
 
-router.put('/:id', [validateObjectId, validator(validateIngredient)], async (req, res) => {
-  const ingredient = await Ingredient.findByIdAndUpdate(req.params.id, req.body, { new: true });
+router.put(
+  '/:id',
+  [auth, admin, validateObjectId, validator(validateIngredient)],
+  async (req, res) => {
+    const ingredient = await Ingredient.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
-  if (!ingredient) return res.status(404).send('The ingredient with the given ID was not found.');
+    if (!ingredient) return res.status(404).send('The ingredient with the given ID was not found.');
 
-  res.send(ingredient);
-});
+    res.send(ingredient);
+  }
+);
 
-router.delete('/:id', validateObjectId, async (req, res) => {
+router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const ingredient = await Ingredient.findByIdAndRemove(req.params.id);
   if (!ingredient) return res.status(404).send('The ingredient with the given ID was not found.');
 

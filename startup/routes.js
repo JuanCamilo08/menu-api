@@ -4,6 +4,7 @@ const cors = require('cors');
 const ingredients = require('../routes/ingredients');
 const food = require('../routes/foods');
 const register = require('../routes/register');
+const login = require('../routes/login');
 
 module.exports = function(app) {
   app.use(express.json());
@@ -12,4 +13,5 @@ module.exports = function(app) {
   app.use('/api/ingredient', ingredients);
   app.use('/api/food', food);
   app.use('/api/register', register);
+  app.use('/api/login', login);
 };
