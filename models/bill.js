@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     required: true
   },
   items: {
-    type: [mongoose.Types.ObjectId],
+    type: [{type: mongoose.Types.ObjectId, ref: 'food'}],
     required: true,
     min: 1,
     max: 25

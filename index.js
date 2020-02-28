@@ -5,6 +5,9 @@ loggingErrors();
 const express = require('express');
 const app = express();
 
+// initialize the db
+require('./startup/db')()
+
 // some stuff to help in the validations
 require('./startup/validate');
 

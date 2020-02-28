@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
     maxlength: 200
   },
   ingredients: {
-    type: [mongoose.Types.ObjectId],
+    type: [{type: mongoose.Types.ObjectId, ref: 'ingredient'}],
     required: true,
     min: 1,
     max: 25
@@ -23,6 +23,11 @@ const schema = new mongoose.Schema({
     type: Number,
     min: 80,
     max: 500,
+    required: true
+  },
+  cathegory: {
+    type: String,
+    enum: ['salads', 'main dishes'],
     required: true
   }
 });
@@ -34,7 +39,8 @@ module.exports.validateIngredient = function(food){
     name: Joi.string().min(5).max(50).required(),
     description: Joi.string().min(5).max(200),
     ingredients: Joi.array().items(Joi.objectId()).min(1).max(25).required(),
-    price: Joi.number().min(80).max(500).required()
+    price: Joi.number().min(80).max(500).required(),
+    cathegory: Joi.string().required().valid('salads', 'main dishes')
   })
 
   return schema.validate(food);
