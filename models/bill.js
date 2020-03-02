@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Joi = require('@hapi/joi');
 
 const schema = new mongoose.Schema({
-  costumer: {
+  customer: {
     type: mongoose.Types.ObjectId,
+    ref: 'user',
     required: true
   },
   date: {
@@ -28,8 +29,8 @@ const schema = new mongoose.Schema({
 module.exports.Bill = mongoose.model('bill', schema);
 
 module.exports.validateBill = function(bill) {
-  const schema = Joi.Object({
-    customer: Joi.objectId().required(),
+  const schema = Joi.object({
+    customer: Joi.objectId(),
     date: Joi.date(),
     items: Joi.array()
       .items(Joi.objectId())
@@ -39,7 +40,6 @@ module.exports.validateBill = function(bill) {
     totalPrice: Joi.number()
       .min(80)
       .max(5000)
-      .required()
   });
 
   return schema.validate(bill);
