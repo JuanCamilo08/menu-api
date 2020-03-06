@@ -6,6 +6,7 @@ const foods = require('../routes/foods');
 const register = require('../routes/register');
 const login = require('../routes/login');
 const bills = require('../routes/bills');
+const suggestion = require('../routes/suggestion');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('../middlewares/swagger');
 
@@ -19,4 +20,5 @@ module.exports = function(app) {
   app.use('/api/ingredient', ingredients);
   app.use('/api/food', foods);
   app.use('/api/bill', bills);
+  app.use('/api/suggestion', suggestion);
 };
