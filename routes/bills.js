@@ -8,22 +8,18 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
 router.get('/', [auth, admin], async (req, res) => {
-  try {
-    const bill = await Bill.find();
-    res.send(bill);
-  } catch (ex) {
-    res.status(500).send('Something failed.');
-  }
+  const bill = await Bill.find();
+  res.send(bill);
 });
 
 router.get('/:id', [auth, admin, validateObjectId], async (req, res) => {
-  const Bill = await Bill.findById(req.params.id)
+  const bill = await Bill.findById(req.params.id)
     .select('-__v')
     .populate('items', '-__v')
     .populate('customer', '-password -__v');
-  if (!Bill) return res.status(404).send('The bill with the given ID was not found.');
+  if (!bill) return res.status(404).send('The bill with the given ID was not found.');
 
-  res.send(Bill);
+  res.send(bill);
 });
 
 router.post('/', [auth, admin, validator(validateBill)], async (req, res) => {

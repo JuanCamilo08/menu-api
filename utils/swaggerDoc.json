@@ -1,0 +1,1045 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Menu api",
+    "description": "This api is about a food's menu, you can create a user, then see the food that we have and if you want buy some food create a bill.",
+    "contact": {
+      "name": "Github",
+      "url": "https://github.com/JuanCamilo08/menu-api"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Logging",
+      "description": "routes to login and register."
+    },
+    {
+      "name": "Ingredient",
+      "description": "Here's the ingredient's CRUD."
+    },
+    {
+      "name": "Food",
+      "description": "Here's the food's CRUD."
+    },
+    {
+      "name": "Bill",
+      "description": "Here's the bill's CRUD."
+    }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": ["Logging"],
+        "description": "Return a token that you'd need in every route in this API like a header.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n\t\"email\": \"example@gmail.com\",\n\t\"password\": \"12345\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A valid token.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error message because the email or password are incorrect.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "Email or password incorrect."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": ["Logging"],
+        "description": "Register a new user to then login and get a token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_1"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n    \"email\": \"example@gmail.com\",\n    \"password\": \"12345\",\n    \"isAdmin\": true\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create a new user in the database and return a message to confirm it.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "You are registered."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/ingredient": {
+      "get": {
+        "tags": ["Ingredient"],
+        "description": "Get all the ingredients.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return an array of ingredient's objects.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "[\n  {\n    \"_id\": \"5e591f0216d7745d4578841f\",\n     \"name\": \"name of ingredient\",\n    \"__v\": 0\n  },\n  {\n    \"_id\": \"5e591f0b16d7745d45788420\",\n    \"name\": \"name of ingredient\",\n    \"__v\": 0\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Ingredient"],
+        "description": "Create a new ingredient.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_2"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n    \"name\": \"new ingredient\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "It returns the created ingredient.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"_id\": \"5e591f0216d7745d4578841f\",\n  \"name\": \"new ingredient\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/ingredient/{ingredientId}": {
+      "put": {
+        "tags": ["Ingredient"],
+        "description": "Update an already existing ingredient.",
+        "parameters": [
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e6101c4eb52945744cdc9f1"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_3"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n    \"name\": \"ingredient's name\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update the ingredient and return the new one.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"_id\": \"5e591f0216d7745d4578841f\",\n  \"name\": \"ingredient's name\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not ingredient found.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The ingredient with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Ingredient"],
+        "description": "Delete an ingredient by his Id.",
+        "parameters": [
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e6101c4eb52945744cdc9f1"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the object of the ingredient deleted.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"_id\": \"5e591f0216d7745d4578841f\",\n  \"name\": \"ingredient's name\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The ingredient does not exist.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The ingredient with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/food": {
+      "get": {
+        "tags": ["Food"],
+        "description": "Get all the foods that exist.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return an array of food's objects.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "[\n  {\n    \"ingredients\": [\n      \"5e591f0b16d7745d45788420\"\n    ],\n    \"_id\": \"5e5d230850c8ee0f14a47097\",\n    \"name\": \"food's name\",\n    \"price\": 80,\n    \"cathegory\": \"main dishes\",\n    \"__v\": 0\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Food"],
+        "description": "Create a new food.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_4"
+              },
+              "examples": {
+                "0": {
+                  "value": "{\n\t\"name\": \"food's name\",\n\t\"ingredients\": [\"5e591f0b16d7745d45788420\"],\n\t\"price\": 150,\n\t\"cathegory\": \"main dishes\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return the created food's object.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"ingredients\": [\n      \"5e591f0b16d7745d45788420\"\n  ],\n  \"_id\": \"5e615723eb52945744cdc9f2\",\n  \"name\": \"food's name\",\n  \"price\": 150,\n  \"cathegory\": \"main dishes\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/food/{foodId}": {
+      "get": {
+        "tags": ["Food"],
+        "description": "Get an unique food with more details.",
+        "parameters": [
+          {
+            "name": "foodId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e6101c4eb52945744cdc9f1"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return the food object.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"ingredients\": [\n    {\n      \"_id\": \"5e591f0b16d7745d45788420\",\n      \"name\": \"pollo\",\n      \"__v\": 0\n    }\n  ],\n  \"_id\": \"5e5d230850c8ee0f14a47097\",\n  \"name\": \"plato del dia\",\n  \"price\": 80,\n  \"cathegory\": \"main dishes\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "the food was not found.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The food with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Food"],
+        "description": "Update an already existing food.",
+        "parameters": [
+          {
+            "name": "foodId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e6101c4eb52945744cdc9f1"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_5"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n\t\"name\": \"updated name\",\n\t\"ingredients\": [\"5e591f0b16d7745d45788420\"],\n\t\"price\": 150,\n\t\"cathegory\": \"main dishes\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return the new food's object.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"ingredients\": [\n      \"5e591f0b16d7745d45788420\"\n  ],\n  \"_id\": \"5e615723eb52945744cdc9f2\",\n  \"name\": \"updated name\",\n  \"price\": 150,\n  \"cathegory\": \"main dishes\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The Id given was not found.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The food with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Food"],
+        "description": "Delete a food by his Id.",
+        "parameters": [
+          {
+            "name": "foodId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e6101c4eb52945744cdc9f1"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0MTU1NzV9.RON1F9inuwkExyu2zdw9-3-_4Djba5g4MefqcQ9KiIY"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return the deleted food.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"ingredients\": [\n      \"5e591f0b16d7745d45788420\"\n  ],\n  \"_id\": \"5e5d230850c8ee0f14a47097\",\n  \"name\": \"plato del dia\",\n  \"price\": 80,\n  \"cathegory\": \"main dishes\",\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "return an string telling you that the food does not exist.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The food with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/bill": {
+      "get": {
+        "tags": ["Bill"],
+        "description": "Get all the bills.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0Njg0ODl9.3lNDEWMRq1d9vTZOU346tNEgKpkdNYJ43lci8v3_ZbA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return an array of bill's objects.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "[\n  {\n    \"date\": \"2020-03-06T04:17:28.133Z\",\n    \"items\": [\n        \"5e6243da15983b1641997674\"\n    ],\n    \"_id\": \"5e62448815983b1641997676\",\n    \"customer\": \"5e5d140e460a5c08eb806d73\",\n    \"totalPrice\": 150,\n    \"__v\": 0\n  }\n]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Bill"],
+        "description": "Here you can create a bill of foods.",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0Njg0ODl9.3lNDEWMRq1d9vTZOU346tNEgKpkdNYJ43lci8v3_ZbA"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_6"
+              },
+              "examples": {
+                "0": {
+                  "value": "{\n    \"items\": [\"5e6243da15983b1641997674\"]\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "return the bill's object.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"date\": \"2020-03-06T04:17:28.133Z\",\n  \"items\": [\n      \"5e6243da15983b1641997674\"\n  ],\n  \"_id\": \"5e6246a615983b1641997677\",\n  \"customer\": \"5e607ed531af362f1559340f\",\n  \"totalPrice\": 150,\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    },
+    "/api/bill/{billId}": {
+      "get": {
+        "tags": ["Bill"],
+        "description": "Get an unique bill with more details.",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e607ed531af362f1559340f"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM0Njg0ODl9.3lNDEWMRq1d9vTZOU346tNEgKpkdNYJ43lci8v3_ZbA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return a detailed bill.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"date\": \"2020-03-06T04:17:28.133Z\",\n  \"items\": [\n      {\n          \"ingredients\": [\n              \"5e591f0b16d7745d45788420\"\n          ],\n          \"_id\": \"5e6243da15983b1641997674\",\n          \"name\": \"food's name\",\n          \"price\": 150,\n          \"cathegory\": \"main dishes\"\n      }\n  ],\n  \"_id\": \"5e6246a615983b1641997677\",\n  \"customer\": {\n      \"isAdmin\": true,\n      \"_id\": \"5e607ed531af362f1559340f\",\n      \"email\": \"example@gmail.com\"\n  },\n  \"totalPrice\": 150\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Bill"],
+        "description": "Update the data in a bill.",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e607ed531af362f1559340f"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM1MDIwODR9.WX0pfrKpp-M_qfPLYYUzbXxpGkKovfiOPpWLFxrtD5E"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/body_7"
+              },
+              "examples": {
+                "1": {
+                  "value": "{\n    \"items\": [\"5e6243da15983b1641997674\", \"5e6253ba8335b3050aa01587\"]\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "return the new bill's object.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"date\": \"2020-03-06T04:17:28.133Z\",\n  \"items\": [\n      \"5e6243da15983b1641997674\",\n      \"5e6253ba8335b3050aa01587\"\n  ],\n  \"_id\": \"5e62448815983b1641997676\",\n  \"customer\": \"5e5d140e460a5c08eb806d73\",\n  \"totalPrice\": 150,\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The bill does not exist or was not found.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The bill with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Bill"],
+        "description": "Delete an bill by his Id.",
+        "parameters": [
+          {
+            "name": "billId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5e5d140e460a5c08eb806d73"
+          },
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbWluIjp0cnVlLCJfaWQiOiI1ZTYwN2VkNTMxYWYzNjJmMTU1OTM0MGYiLCJpYXQiOjE1ODM1MDIwODR9.WX0pfrKpp-M_qfPLYYUzbXxpGkKovfiOPpWLFxrtD5E"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "return the deleted bill.",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "{\n  \"date\": \"2020-03-06T04:17:28.133Z\",\n  \"items\": [\n      \"5e6243da15983b1641997674\",\n      \"5e6253ba8335b3050aa01587\"\n  ],\n  \"_id\": \"5e62448815983b1641997676\",\n  \"customer\": \"5e5d140e460a5c08eb806d73\",\n  \"totalPrice\": 150,\n  \"__v\": 0\n}"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "the bill does not exist.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "1": {
+                    "value": "The bill with the given ID was not found."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "http://localhost:3000"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "http://localhost:3000"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Register": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Ingredient": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "Food": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "price": {
+            "type": "integer"
+          },
+          "cathegory": {
+            "type": "string",
+            "enum": ["salads", "main dishes"]
+          }
+        }
+      },
+      "Bill": {
+        "type": "object",
+        "properties": {
+          "cathegory": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

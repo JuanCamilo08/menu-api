@@ -7,12 +7,8 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
 router.get('/', [auth, admin], async (req, res) => {
-  try {
-    const ingredients = await Ingredient.find();
-    res.send(ingredients);
-  } catch (ex) {
-    res.status(500).send('Something failed.');
-  }
+  const ingredients = await Ingredient.find();
+  res.send(ingredients);
 });
 
 router.post('/', [auth, admin, validator(validateIngredient)], async (req, res) => {

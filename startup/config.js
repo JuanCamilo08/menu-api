@@ -1,4 +1,5 @@
 const config = require('config');
+require('express-async-errors');
 
 module.exports = function() {
   if (!config.get('jwtPrivateKey')) {
