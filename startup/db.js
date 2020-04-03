@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { logger } = require('./logging');
 
 module.exports = async function() {
-  const db = await mongoose.connect('mongodb://localhost:27017/food-menu', {
+  const db = await mongoose.connect('mongodb://mongo:27017/food-menu', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

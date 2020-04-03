@@ -6,7 +6,7 @@ const foods = require('../routes/foods');
 const register = require('../routes/register');
 const login = require('../routes/login');
 const bills = require('../routes/bills');
-const suggestion = require('../routes/suggestion');
+const suggestion = require('../routes/suggestions');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('../middlewares/swagger');
 

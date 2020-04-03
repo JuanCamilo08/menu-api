@@ -8,7 +8,7 @@ const app = express();
 // initialize the db
 require('./startup/db')();
 
-//private jey
+//private key
 require('./startup/config')();
 
 // some stuff to help in the validations
